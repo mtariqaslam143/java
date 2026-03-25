@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NADRA VIRTUAL QUEUE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="card bg-white shadow-lg p-4 rounded w-96 text-center">
+      <div class="font-semibold mb-4">NADRA ONLINE  QUEUE 
+        
+
+        <div class="py-4 text-yellow-500">Your queue Number:<span id="queuenumber">15</span>
+      </div>
+      
+      <div class="text-center border p-4 rounded border-gray-300">
+        <h2 class="mb-4 text-green-800 font-semibold">Security check</h2>
+        <p>browser:<span id="browsername">detecting....</span></p>
+        <p>operating system: <span id="osname">detecting...</span></p>
+      </div>
+
+
+      <div id="sessionWarning" class=" hidden text-semibold bg-yellow-200 text-yellow-800 mt-4 rounded p-3">session warning soon: please open this tab</div>
+
+      <!--script-->
+      <script>
+        let queue = 15;
+        const queueEl = document.getElementById("queuenumber");
+
+        const countdown = setInterval(() => {
+            queue--;
+            queueEl.textContent = queue;
+            if(queue <= 0){
+                clearInterval(countdown);
+                window.location.href = "https://www.youtube.com";
+            }
+        }, 2000);
+        //=====browser.os detection=====
+        const userAgent = navigator.userAgent;
+        const browserEl = document.getElementById("browsername");
+        const osEl = document.getElementById("osname");
+        //====browser detection====
+        if(userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Edg")  === -1){
+        browserEl = textContent ="Chrome";
+
+        } else if(userAgent.indexOf("Firefox") > -1){
+            browserEl.textContent ="firefox";
+       }
+       
+       else if(userAgent.indexOf("safari") > -1 && userAgent.indexOf("browser") === -1){
+        browserEl.textContent ="safari";
+       } else {
+        browserEl.textContent = "other";
+       }
+       
+       // Os detection
+       if(/Mobi|Android/i.test(userAgent)){
+        osEl.textContent = "Mobile";
+       }  else{
+        osEl.textContent = "desktop";
+       }
+            // session Expiry date
+            setTimeout( () =>{
+                document.getElementById("sessionWarning").classList.remove("hidden");
+            }, 10000);
+        
+
+
+      </script>
+
+
+
+
+  </div>
+    
+</body>
+</html>
