@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Count Bill</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!--nav-->
+    <div class="bg-green-600 text-white text-2xl text-center py-4 ">
+        <span id="days">only</span>
+     days left unntil Eid? </div>
+   <!--form-->
+   <div class="p-10 mt-6 mx-auto bg-white max-w-xl rounded-xl shadow">
+    <h2 class="text-xl text-green-600 font-bold mb-4">
+        IFTAR BILL SPLITTER
+    </h2>
+    <!--total bill-->
+    <section class="mb-3">
+        <label class=" font-semibold ">Total Bill</label>
+        <input id="bill" class="w-full border p-2 rounded" type="number">
+    </section>
+    <!--tax /tip-->
+    <div>
+        
+        <label class=" block font-semibold">tax/tip</label>
+        <select id="tax" class="w-full border rounded p-2">
+        
+            <option>5</option>
+            <option>16</option>
+            <option>20</option>
+        </select>
+        </div>
+        <!--phone number-->
+        <div class="mb-3">
+            <label class=" font-semibold">Total friends</label>
+            <input class="w-full border rounded p-2" id="friends" type="number">
+        </div>
+        <!--phone-->
+        <div>
+            <label class="font-semibold">easypaisa/phone number</label>
+            <input class="w-full border rounded p-2" id="phone" type="text" placeholder="03xxxxxxxxx">
+        </div>
+        <!--button-->
+        <button onclick="calculate()" class="bg-green-500 py-2 rounded w-full mt-4 text-white hover:bg-green-600 ">Calculate Total</button>
+
+        <p id="error" class="text-red-500 mt-3"></p>
+        <div class="mt-4" id="result"></div>
+
+   </div>
+   <script>
+   // Eid Countdown
+
+let eid = new Date("march 21,2026");
+let today = new Date();
+let diff = eid - today;
+let days = Math.ceil(diff/(1000*60*60*24));
+document.getElementById("days").innerHTML = days;
+
+function calculate() {
+    document.getElementById("error").innerHTML = "";
+    document.getElementById("result").innerHTML = "";
+    try{
+        let bill = Number(document.getElementById("bill").value);
+        let tax = document.getElementById("tax").value;
+        let friends = Number(document.getElementById("friends").value);
+        let phone = document.getElementById("phone").value;
+
+        if(friends ==0){
+            throw "cannot split a bill with 0 people"
+        }
+        <!--let split-->
+        let multiplier;
+        switch(tax){
+            case "5":
+            multiplier = 1.05;
+            break;
+
+            case "16":
+                multiplier = 1.16;
+                break;
+                case "20":
+                    multiplier = 1.20;
+                    break
+        }
+        // phone velegation
+        let pattern = /^03\d{9}$/;
+
+        if (!pattern.test(phone)){
+            throw "Invalid pakistani phone numbber";
+        }
+let total = bill * multiplier;
+let each = total / friends;
+//for loop 
+for(let i=1; i<=friends;i++){
+    document.getElementById("result").innerHTML +=
+    "<p>friend "+i+" pays RS "+each.toFixed()+"</p>";
+}
+    }
+    catch (err){
+        document.getElementById("error").innerHTML = err;
+    }
+}
+</script>
+    
+</body>
+</html>
