@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>converted Amount</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class=" bg-light d-flex justify-content-center align-items-center vh-100">
+
+    <div class="card shadow berdered p-4 w-25">
+        <h5 class="mb-2">Curency Converted</h5>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">PKR</span>
+            <input type="number" id="amount" class="form-control" placeholder="Enteramount" >
+        </div>
+
+        <select class="form-select mb-3">
+            <option>USD</option>
+            <option>EUR</option>
+            <option>GBP</option>
+            <option>SAR</option>
+        </select>
+
+        <button class="btn btn-primary" id="btn">
+            GET LIVE RATE
+
+        </button>
+
+        <!--spinner-->
+        <div class="text-center mt-3">
+            <div class="btn-primary d-done spinner-border" id="spinner"></div>
+        </div>
+        
+        
+            <h2 class="text-center mb-3" id="result"></h2>  
+    </div>
+    <!--java=script-->
+    <script>
+        let btn = document.getElementById("btn");
+        let spinner = document.getElementById("spinner");
+        //==add==
+        btn.addEventListener("click", async function(){
+            let amount = document.getElementById("amount");
+            let currency = document.getElementById("currency");
+            let result = document.getElementById("result");
+            if(amount <= 0 || isNaN(amount)){
+                result.innerHTML = "⚠ Enter valid amount";
+                return;
+            }
+            btn.innerHTML ="Loading...";
+            spinner.classList.remove("d.none");
+
+            try {
+                let response = await fetch("https://open.er-api.com/v6/latest/PKR");
+                if (!response.ok); {
+            throw new Error("API Error");
+        }
+
+        let data = await response.json();
+
+        let rate = data.rates[currency];
+        let converted = amount * rate;
+
+        result.innerHTML = `${amount} PKR = ${converted.toFixed(2)} ${currency}`;
+
+    } catch (error) {
+        result.innerHTML = "❌ Failed to fetch data!";
+    }
+
+    btn.innerHTML = "Get Live Rate";
+    spinner.classList.add("d-none");
+
+
+            }
+        });
+    </script>
+    
+</body>
+</html>
